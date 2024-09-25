@@ -2,9 +2,9 @@
     "name": "frontend",
     "private": true,
     "scripts": {
-        "dev": "dotenv -e .env -- next dev",
+        "dev": "dotenv -e .env.local -- next dev",
         "build": "next build",
-        "start": "dotenv -e .env -- next start",
+        "start": "dotenv -e .env.local -- next start",
         "lint": "next lint"
     },
     "dependencies": {
