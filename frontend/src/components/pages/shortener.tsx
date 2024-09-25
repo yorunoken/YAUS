@@ -14,11 +14,15 @@ import { Label } from "@/components/ui/label";
 import { AlertCircle, Link as LinkIcon, X } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
+import { Session } from "next-auth";
+import { UrlInsert } from "@/types/db";
 
 export default function Shortener({
-    inputUrl,
+    insertUrl,
+    session,
 }: {
-    inputUrl: (url: string) => Promise<{ code: string }>;
+    insertUrl: (url: string) => Promise<UrlInsert>;
+    session: Session | null;
 }) {
     const { toast } = useToast();
     const [longUrl, setLongUrl] = useState("");
@@ -33,11 +37,9 @@ export default function Shortener({
         setShortUrl("");
 
         try {
-            const response = await inputUrl(longUrl);
+            const response = await insertUrl(longUrl);
 
-            const shortened = `https://${
-                window.location.hostname
-            }/${response.code}`;
+            const shortened = `https://${window.location.hostname}/${response.code}`;
             setShortUrl(shortened);
             setIsLoading(false);
         } catch (e) {
@@ -56,17 +58,16 @@ export default function Shortener({
     }
 
     return (
-        <Card className="w-full max-w-md">
+        <Card className="flex-1">
             <CardHeader>
-                <CardTitle>URL Shortener</CardTitle>
+                <CardTitle>Generate Short URL</CardTitle>
                 <CardDescription>
-                    Enter a long URL to get a shortened version
+                    Create a short link for your long URL
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="longUrl">Long URL</Label>
                         <Input
                             id="longUrl"
                             type="url"
@@ -84,7 +85,6 @@ export default function Shortener({
                         {isLoading ? "Shortening..." : "Shorten URL"}
                     </Button>
                 </form>
-
                 {error && (
                     <Alert variant="destructive" className="mt-4">
                         <AlertCircle className="h-4 w-4" />
@@ -92,7 +92,6 @@ export default function Shortener({
                         <AlertDescription>{error}</AlertDescription>
                     </Alert>
                 )}
-
                 {shortUrl && (
                     <div className="relative">
                         <X
@@ -112,6 +111,12 @@ export default function Shortener({
                             </div>
                         </div>
                     </div>
+                )}
+                {!session && (
+                    <p className="mt-4 text-xs text-gray-400">
+                        Note: Without an account, your shortened URLs won{"'"}t
+                        be saved to your profile.
+                    </p>
                 )}
             </CardContent>
         </Card>

@@ -13,13 +13,17 @@ pub async fn shorten_url(
     // Reset the db??
     db.reset().await;
 
-    let long_url = request.url;
+    let UrlExistsRequest { discord_id, url } = request;
     let short_code = generate_unique_short_code(&db, 12).await?;
 
     match db
         .execute(
-            "INSERT INTO urls (short_code, original_url) VALUES (?, ?)",
-            params![short_code.clone(), long_url],
+            "INSERT INTO urls (discord_id, short_code, original_url) VALUES (?, ?, ?)",
+            params![
+                discord_id.unwrap_or(String::from("-1")),
+                short_code.clone(),
+                url
+            ],
         )
         .await
     {

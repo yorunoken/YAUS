@@ -10,10 +10,15 @@ pub fn routes(
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     // GET routes
 
-    let get_url = warp::path!("api" / "get" / String)
+    let get_url = warp::path!("api" / "url" / String / "get")
         .and(warp::get())
         .and(with_db(db.clone()))
         .and_then(get::get_url);
+
+    let get_user = warp::path!("api" / "user" / String / "get")
+        .and(warp::get())
+        .and(with_db(db.clone()))
+        .and_then(get::get_user);
 
     // POST routes
 
@@ -23,5 +28,5 @@ pub fn routes(
         .and(with_db(db.clone()))
         .and_then(post::shorten_url);
 
-    insert_url.or(get_url)
+    insert_url.or(get_url).or(get_user)
 }
