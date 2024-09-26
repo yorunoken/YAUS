@@ -3,7 +3,7 @@ use warp::{http::StatusCode, Rejection, Reply};
 
 use crate::models::{Message, UrlDbSchema};
 
-pub async fn get_user(discord_id: String, db: Connection) -> Result<impl Reply, Rejection> {
+pub async fn user(discord_id: String, db: Connection) -> Result<impl Reply, Rejection> {
     // Reset the db??
     db.reset().await;
 

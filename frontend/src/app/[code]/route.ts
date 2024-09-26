@@ -6,7 +6,7 @@ import { NextRequest } from "next/server";
 export async function GET(request: NextRequest) {
     const code = request.nextUrl.pathname.slice(1);
 
-    const response = await fetch(`${BACKEND_URL}/api/url/${code}/get`);
+    const response = await fetch(`${BACKEND_URL}/api/url/${code}`);
 
     if (response.status !== 200) {
         notFound();

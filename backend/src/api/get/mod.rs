@@ -1,4 +1,4 @@
-pub use self::{get_url::get_url, get_user::get_user};
+pub use self::{url::url, user::user};
 
-mod get_url;
-mod get_user;
+mod url;
+mod user;

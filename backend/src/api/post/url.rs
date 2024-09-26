@@ -6,10 +6,7 @@ use crate::{
     utils::generate_unique_short_code,
 };
 
-pub async fn shorten_url(
-    request: UrlExistsRequest,
-    db: Connection,
-) -> Result<impl Reply, Rejection> {
+pub async fn url(request: UrlExistsRequest, db: Connection) -> Result<impl Reply, Rejection> {
     // Reset the db??
     db.reset().await;
 
