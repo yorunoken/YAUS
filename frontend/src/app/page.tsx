@@ -60,6 +60,12 @@ export default async function Home() {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-4">
+            <header className="text-center mb-8">
+                <h1 className="text-3xl font-bold">YAUS</h1>
+                <p className="text-sm text-muted-foreground">
+                    yet-another-url-shortener.
+                </p>
+            </header>
             <div className="w-full max-w-4xl flex flex-col md:flex-row gap-8">
                 <Login
                     session={session}
